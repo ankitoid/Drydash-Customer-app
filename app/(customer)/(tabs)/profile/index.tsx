@@ -1,0 +1,198 @@
+import { ChevronRight, LogOut } from "lucide-react-native";
+import React from "react";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useTheme } from "../../../../context/ThemeContext";
+
+const MENU_1 = [
+  { label: "Edit Profile" },
+  { label: "Change Password" },
+  { label: "Payment Methods" },
+  { label: "Notifications" },
+];
+
+const MENU_2 = [
+  { label: "Help & Support" },
+  { label: "Privacy Policy" },
+  { label: "Terms of Service" },
+];
+
+export default function Profile() {
+  const { theme, isDark } = useTheme();
+
+  return (
+    <ScrollView
+      style={{ flex: 1, backgroundColor: theme.background }}
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* PROFILE HEADER */}
+      <View style={styles.header}>
+        <View style={styles.avatarWrapper}>
+          <Image
+            source={{
+              uri: "https://i.pravatar.cc/150?img=47",
+            }}
+            style={styles.avatar}
+          />
+        </View>
+
+        <Text style={[styles.name, { color: theme.text }]}>
+          Jane Doe
+        </Text>
+        <Text style={[styles.email, { color: theme.subText }]}>
+          jane.doe@example.com
+        </Text>
+      </View>
+
+      {/* MENU CARD 1 */}
+      <View style={[styles.card, { backgroundColor: theme.card }]}>
+        {MENU_1.map((item, index) => (
+          <MenuRow
+            key={item.label}
+            label={item.label}
+            theme={theme}
+            isLast={index === MENU_1.length - 1}
+          />
+        ))}
+      </View>
+
+      {/* MENU CARD 2 */}
+      <View style={[styles.card, { backgroundColor: theme.card }]}>
+        {MENU_2.map((item, index) => (
+          <MenuRow
+            key={item.label}
+            label={item.label}
+            theme={theme}
+            isLast={index === MENU_2.length - 1}
+          />
+        ))}
+      </View>
+
+      {/* LOGOUT */}
+      <TouchableOpacity
+        activeOpacity={0.9}
+        style={[
+          styles.logoutBtn,
+          {
+            backgroundColor: isDark ? "#3B1F1F" : "#FEE2E2",
+          },
+        ]}
+      >
+        <LogOut size={18} color="#EF4444" />
+        <Text style={styles.logoutText}>Log Out</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+}
+
+/* ================= MENU ROW ================= */
+
+function MenuRow({
+  label,
+  theme,
+  isLast,
+}: {
+  label: string;
+  theme: any;
+  isLast: boolean;
+}) {
+  return (
+    <TouchableOpacity
+      activeOpacity={0.75}
+      style={[
+        styles.menuRow,
+        !isLast && {
+          borderBottomWidth: 1,
+          borderColor: theme.border,
+        },
+      ]}
+    >
+      <Text style={[styles.menuText, { color: theme.text }]}>
+        {label}
+      </Text>
+      <ChevronRight size={18} color={theme.subText} />
+    </TouchableOpacity>
+  );
+}
+
+/* ================= STYLES ================= */
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 16,
+    paddingTop: 24,
+    paddingBottom: 120,
+  },
+
+  header: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+
+  avatarWrapper: {
+    width: 84,
+    height: 84,
+    borderRadius: 42,
+    backgroundColor: "#FDF2E9",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 12,
+  },
+
+  avatar: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+  },
+
+  name: {
+    fontSize: 18,
+    fontWeight: "800",
+  },
+
+  email: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+
+  card: {
+    borderRadius: 18,
+    marginBottom: 14,
+    overflow: "hidden",
+  },
+
+  menuRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    height: 54,
+  },
+
+  menuText: {
+    fontSize: 14,
+    fontWeight: "600",
+  },
+
+  logoutBtn: {
+    marginTop: 20,
+    height: 52,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 10,
+  },
+
+  logoutText: {
+    fontWeight: "800",
+    color: "#EF4444",
+  },
+});
